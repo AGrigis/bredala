@@ -1,13 +1,13 @@
-.. image:: https://travis-ci.org/AGrigis/breadala.svg?branch=master
-    :target: https://travis-ci.org/AGrigis/breadala
+.. image:: https://travis-ci.org/AGrigis/bredala.svg?branch=master
+    :target: https://travis-ci.org/AGrigis/bredala
 
 
-.. image:: https://coveralls.io/repos/AGrigis/breadala/badge.svg?branch=master&service=github
-    :target: https://coveralls.io/github/AGrigis/breadala
+.. image:: https://coveralls.io/repos/AGrigis/bredala/badge.svg?branch=master&service=github
+    :target: https://coveralls.io/github/AGrigis/bredala
 
 
 Easy to use pure-python caller signature and profiler.
-Based on Pelletier's _pprofile_.
+Based on Pelletier's pprofile_.
 
 Overview
 ========
@@ -18,7 +18,7 @@ execution ioutput is not filtered and the information of interest may be
 difficult to find. Those drawbacks made me start 'bredala' which provide:
 
 - A dynamic API to define which functions/methods to follow (based on the 'New
-  Import Hooks PEP0302' _importhooks_.
+  Import Hooks' PEP0302_.
 
 - A signature mechanism that display the prototype of the called
   function/method.
@@ -175,6 +175,6 @@ Perspectives
 It will be nice to configure which functions/modules are followed on the fly.
 
 .. _pprofile: https://github.com/vpelletier/pprofile
-.. _importhooks: https://www.python.org/dev/peps/pep-0302/
+.. _PEP0302: https://www.python.org/dev/peps/pep-0302/
 
 
