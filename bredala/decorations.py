@@ -10,34 +10,12 @@
 ##########################################################################
 
 # System import
+import sys
 import inspect
 import types
 
 # Bredala import
-import modulehacker
 import bredala
-from .signaturedecorator import bredala_signature
-
-
-_modules = {}
-
-
-def register(module, decorator=bredala_signature, names=None):
-    """ Function to register a decorator for a list of module names.
-
-    Parameters
-    ----------
-    decorator: callable (mandatory)
-        a decorator function.
-    module: str (mandatory)
-        a module name whose functions will be decorated.
-    names: list of str (optional, default None)
-        a list of function or methods we want to decorate, if None all the
-        module functions or methods will be decorated.
-    """
-    if module not in _modules:
-        _modules[module] = []
-    _modules[module].append({"decorator": decorator, "names": names})
 
 
 class Decorations(object):
@@ -62,7 +40,7 @@ class Decorations(object):
             the input python module object.
         """
         # If a decorator is decalred for the module apply it now
-        for decorator_struct in _modules.get(name, ()):
+        for decorator_struct in bredala._modules.get(name, ()):
             self.decorate(module, decorator_struct["decorator"],
                           decorator_struct["names"], name)
         return module
@@ -105,14 +83,18 @@ class Decorations(object):
                         allowed_methods = [None]
                     else:
                         allowed_methods = mapping[module_object.__name__]
-                    for method_name, method in inspect.getmembers(
-                            module_object, predicate=inspect.ismethod):
+                    if sys.version_info[:2] >= (3, 0):
+                        methods = inspect.getmembers(
+                            module_object, predicate=inspect.isfunction)
+                    else:
+                        methods = inspect.getmembers(
+                            module_object, predicate=inspect.ismethod)
+                    for method_name, method in methods:
                         if (None in allowed_methods or
                                 method_name in allowed_methods):
-                            setattr(module_object, method_name,
-                                    decorator(
-                                        method, True,
-                                        use_profiler=bredala.USE_PROFILER))
+                            setattr(module_object, method_name, decorator(
+                                    method, True,
+                                    use_profiler=bredala.USE_PROFILER))
 
     @classmethod
     def split_class(cls, name):
@@ -141,6 +123,3 @@ class Decorations(object):
             kname = name
             mname = None
         return kname, mname
-
-
-modulehacker.register(Decorations())

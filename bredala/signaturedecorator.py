@@ -8,6 +8,7 @@
 ##########################################################################
 
 # System import
+from __future__ import print_function
 import sys
 import inspect
 import time
@@ -164,8 +165,8 @@ def annotate(profiler, out, module_name, obj_code):
             call_list_by_line = file_timing.getCallListByLine()
 
             # Display the result table header
-            print >> out, pprofile._ANNOTATE_HEADER
-            print >> out, pprofile._ANNOTATE_HORIZONTAL_LINE
+            print(pprofile._ANNOTATE_HEADER, file=out)
+            print(pprofile._ANNOTATE_HORIZONTAL_LINE, file=out)
 
             # Populate the table with the execution result
             in_obj = False
@@ -182,14 +183,14 @@ def annotate(profiler, out, module_name, obj_code):
                         time_per_hit = duration / hits
                     else:
                         time_per_hit = 0
-                    print >> out, pprofile._ANNOTATE_FORMAT % {
+                    print(pprofile._ANNOTATE_FORMAT % {
                         "lineno": lineno,
                         "hits": hits,
                         "time": duration,
                         "time_per_hit": time_per_hit,
                         "percent": percent(duration, total_time),
                         "line": line,
-                    },
+                    }, end="", file=out),
 
                 # Select the portion related to the called object
                 if line == obj_code[-1]:

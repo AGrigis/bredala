@@ -7,23 +7,46 @@
 # for details.
 #
 # From: http://code.activestate.com/recipes/577742
+# And: https://www.python.org/dev/peps/pep-0302/
 ##########################################################################
 
 # System import
 import sys
-import importlib
+import os
+import inspect
+import imp
+
+# Bredala import
+import bredala
+from .signaturedecorator import bredala_signature
+from.decorations import Decorations
 
 
-_hackers = []
+def register(module, decorator=bredala_signature, names=None):
+    """ Function to register a decorator for a list of module names.
+
+    Parameters
+    ----------
+    decorator: callable (mandatory)
+        a decorator function.
+    module: str (mandatory)
+        a module name whose functions will be decorated.
+    names: list of str (optional, default None)
+        a list of function or methods we want to decorate, if None all the
+        module functions or methods will be decorated.
+    """
+    if module not in bredala._modules:
+        bredala._modules[module] = []
+    bredala._modules[module].append({"decorator": decorator, "names": names})
 
 
-def register(obj):
+def modulehacker_register(obj):
     """ A simple registery to define new hackers.
     """
-    _hackers.append(obj)
+    bredala._hackers.append(obj)
 
 
-class BredalaImportHook(object):
+class BredalaMetaImportHook(object):
     """ A class that import a module like normal and then passed to a hacker
     object that gets to do whatever it wants to the module. Then the return
     value from the hack call is put into sys.modules.
@@ -31,7 +54,7 @@ class BredalaImportHook(object):
     def __init__(self):
         self.module = None
 
-    def find_module(self, name, path):
+    def find_module(self, name, path=None):
         """ This method is called by Python if this class is on sys.path.
         'name' is the fully-qualified name of the module to look for, and
         'path' is either __path__ (for submodules and subpackages) or None (for
@@ -41,11 +64,19 @@ class BredalaImportHook(object):
         is detected (or __import__ is called), before Python's built-in
         package/module-finding code kicks in.
         """
-        sys.meta_path.remove(self)
+        # Use this loader only on registered modules
+        if name not in bredala._modules:
+            return None
+
+        self.sub_name = name.split(".")[-1]
+        self.mod_name = name.rpartition(".")[0]
         try:
-            self.module = importlib.import_module(name)
-        finally:
-            sys.meta_path.insert(0, self)
+            self.file, self.filename, self.stuff = imp.find_module(
+                self.sub_name, path)
+            self.path = [self.filename]
+        except ImportError:
+            return None
+
         return self
 
     def load_module(self, name):
@@ -53,13 +84,23 @@ class BredalaImportHook(object):
          does not return None. 'name' is the fully-qualified name
          of the module/package that was requested.
         """
-        if not self.module:
-            raise ImportError("Unable to load module.")
-        module = self.module
-        for hacker in _hackers:
+        module = imp.load_module(name, self.file, self.filename,
+                                 self.stuff)
+        if self.file:
+            self.file.close()
+        for hacker in bredala._hackers:
             module = hacker.hack(module, name)
-        sys.modules[name] = module
+        module.__path__ = self.path
+        module.__loader__ = self
+        module.__package__ = name
+        module.__name__ = name
+        if self.stuff[0] == ".py":
+            module.__file__ = self.path[0]
+        else:
+            module.__file__ = os.path.join(self.path[0], "__init__.py")
+
         return module
 
 
-sys.meta_path.insert(0, BredalaImportHook())
+modulehacker_register(Decorations())
+sys.meta_path.insert(0, BredalaMetaImportHook())

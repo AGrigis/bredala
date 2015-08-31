@@ -7,8 +7,11 @@
 # for details.
 ##########################################################################
 
-# Bredala import
-from .decorations import register
-
+# Bredala globals
 __version__ = "1.0.0"
 USE_PROFILER = True
+_modules = {}
+_hackers = []
+
+# Bredala import
+from .modulehacker import register

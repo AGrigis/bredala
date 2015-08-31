@@ -40,6 +40,5 @@ setup(
     ],
     packages=find_packages(),
     package_data=pkgdata,
-    install_requires=["pprofile>=1.6"],
-    zip_safe=True
+    install_requires=["pprofile>=1.6"]
 )
