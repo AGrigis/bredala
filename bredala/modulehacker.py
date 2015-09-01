@@ -6,8 +6,7 @@
 # http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.html
 # for details.
 #
-# From: http://code.activestate.com/recipes/577742
-# And: https://www.python.org/dev/peps/pep-0302/
+# Based on: https://www.python.org/dev/peps/pep-0302/
 ##########################################################################
 
 # System import
@@ -68,8 +67,11 @@ class BredalaMetaImportHook(object):
         if name not in bredala._modules:
             return None
 
+        # Get parent module and associated sub module names
         self.sub_name = name.split(".")[-1]
         self.mod_name = name.rpartition(".")[0]
+
+        # Find the sub module and build the module path
         try:
             self.file, self.filename, self.stuff = imp.find_module(
                 self.sub_name, path)
@@ -77,6 +79,7 @@ class BredalaMetaImportHook(object):
         except ImportError:
             return None
 
+        # Return The loader, here the object itself
         return self
 
     def load_module(self, name):
@@ -84,12 +87,17 @@ class BredalaMetaImportHook(object):
          does not return None. 'name' is the fully-qualified name
          of the module/package that was requested.
         """
+        # Load the module
         module = imp.load_module(name, self.file, self.filename,
                                  self.stuff)
         if self.file:
             self.file.close()
+
+        # Decorate the function/methods
         for hacker in bredala._hackers:
             module = hacker.hack(module, name)
+
+        # Update the module required information
         module.__path__ = self.path
         module.__loader__ = self
         module.__package__ = name

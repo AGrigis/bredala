@@ -5,8 +5,6 @@
 # the CEA-CNRS-INRIA. Refer to the LICENSE file or to
 # http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.html
 # for details.
-#
-# From: http://code.activestate.com/recipes/577742
 ##########################################################################
 
 # System import

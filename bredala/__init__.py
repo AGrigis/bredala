@@ -8,7 +8,7 @@
 ##########################################################################
 
 # Bredala globals
-__version__ = "1.0.0"
+__version__ = "1.0.2"
 USE_PROFILER = True
 _modules = {}
 _hackers = []
