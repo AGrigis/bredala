@@ -57,9 +57,12 @@ def bredala_signature(obj, is_method=False, use_profiler=True):
                 if arg_spec.args[index] == "cls":
                     args = args[1:]
                 if isinstance(value, list):
-                    value_repr = array_repr(numpy.asarray(value))[6:]
-                    endindex = value_repr.find("dtype") - 2
-                    value_repr = value_repr[:endindex]
+                    try:
+                        value_repr = array_repr(numpy.asarray(value))[6:]
+                        endindex = value_repr.find("dtype") - 2
+                        value_repr = value_repr[:endindex]
+                    except:
+                        value_repr = repr(value)
                 elif isinstance(value, numpy.ndarray):
                     value_repr = array_repr(numpy.asarray(value))
                 else:
