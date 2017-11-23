@@ -14,7 +14,7 @@ types.
 
 
 # System import
-import __builtin__
+import sys
 import re
 import inspect
 import logging
@@ -29,7 +29,13 @@ from .exceptions import InvalidReturnNumberError
 
 
 # Global parameters
-TYPES = [t for t in __builtin__.__dict__.itervalues() if isinstance(t, type)]
+if sys.version_info[:2] >= (3, 0):
+    import builtins
+    TYPES = [t for t in builtins.__dict__.values() if isinstance(t, type)]
+else:
+    import __builtin__
+    TYPES = [t for t in __builtin__.__dict__.itervalues()
+             if isinstance(t, type)]
 
 
 def ordinal(num):
