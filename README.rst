@@ -1,13 +1,19 @@
 .. image:: https://travis-ci.org/AGrigis/bredala.svg?branch=master
     :target: https://travis-ci.org/AGrigis/bredala
 
-
 .. image:: https://coveralls.io/repos/AGrigis/bredala/badge.svg?branch=master&service=github
     :target: https://coveralls.io/github/AGrigis/bredala
+
+.. |Python27| image:: https://img.shields.io/badge/python-2.7-blue.svg
+.. _Python27: https://badge.fury.io/py/bredala
+
+.. |Python34| image:: https://img.shields.io/badge/python-3.4-blue.svg
+.. _Python34: https://badge.fury.io/py/bredala
 
 
 Easy to use pure-python caller signature and line-profiler.
 Based on Pelletier's pprofile_.
+Visit also the main `documentation <http://AGrigis.github.io/bredala>`_.
 
 Overview
 ========
@@ -30,7 +36,7 @@ Usage
 =====
 
 The proposed module display function signatures and by default function line
-profiles. The lattest option can be disabled::
+profiles. The latest option can be disabled::
 
     import bredala
     bredala.USE_PROFILER = False
@@ -172,7 +178,7 @@ Perspectives
 ============
 
 It will be nice to configure which functions/modules are followed on the fly.
-It will be noce to add a backend in order to use 'line_profiler' or 'pprofile'.
+It will be nice to add a backend in order to use 'line_profiler' or 'pprofile'.
 
 .. _pprofile: https://github.com/vpelletier/pprofile
 .. _PEP0302: https://www.python.org/dev/peps/pep-0302/

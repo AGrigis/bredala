@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 ##########################################################################
 # Bredala - Copyright (C) AGrigis, 2015
 # Distributed under the terms of the CeCILL-B license, as published by
@@ -6,6 +5,11 @@
 # http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.html
 # for details.
 ##########################################################################
+
+"""
+Module that sets the package decoration functions dynamically.
+"""
+
 
 # System import
 import sys
@@ -17,7 +21,7 @@ import bredala
 
 
 class Decorations(object):
-    """ A class that docorate a module functions based on the factory, ie.
+    """ A class that decorate a module functions based on the factory, ie.
     the '_modules' mapping.
     """
     def hack(self, module, name):
@@ -38,61 +42,113 @@ class Decorations(object):
             the input python module object.
         """
         # If a decorator is decalred for the module apply it now
-        for decorator_struct in bredala._modules.get(name, ()):
-            self.decorate(module, decorator_struct["decorator"],
-                          decorator_struct["names"], name)
+        decorators_struct = bredala._modules.get(name)
+        if decorators_struct is not None:
+            self.decorate(module, name, decorators_struct)
         return module
 
-    def decorate(self, module, decorator, names, name):
-        """ Method that decorates function and class methods.
+    def decorate(self, module, name, decorators_struct):
+        """ Method that decorates the registered function and class methods
+        of a module.
 
         Parameters
         ----------
         module: object (mandatory)
             a python module object.
-        decorator: callable (mandatory)
-            a decorator function that will be applied on all the input module
-            slected functions and methods.
-        names: list of str (mandatory)
-            a list of function or methods we want to decorate, if None all the
-            module functions or methods will be decorated.
         name: str (mandatory)
             the name of the input module.
+        decorators_struct: dict of dict
+            a dictionary with the functions/methods to be decorated as first
+            keys, the decorator type as second keys and the decorator -
+            decorator parameters as values.
         """
         # Create a class mapping
         mapping = {}
-        if names is not None:
-            for filter_name in names:
-                kname, mname = Decorations.split_class(filter_name)
-                mapping.setdefault(kname, []).append(mname)
+        for filter_name in decorators_struct:
+            kname, mname = Decorations.split_class(filter_name)
+            mapping.setdefault(kname, []).append(mname)
 
         # Walk on all the module items
         for module_attr, module_object in module.__dict__.items():
 
             # Function case
             if isinstance(module_object, types.FunctionType):
-                if names is None or module_object.__name__ in names:
-                    setattr(module, module_attr, decorator(module_object,
-                            use_profiler=bredala.USE_PROFILER))
+                if "ALL" in decorators_struct:
+                    key = "ALL"
+                elif module_object.__name__ in decorators_struct:
+                    key = module_object.__name__
+                else:
+                    continue
+                Decorations._decorate(module, module_attr, module_object,
+                                      decorators_struct[key])
+
             # Class case
             elif inspect.isclass(module_object):
-                if names is None or module_object.__name__ in mapping:
-                    if names is None:
-                        allowed_methods = [None]
+                if "ALL" in mapping:
+                    allowed_methods = "ALL"
+                elif module_object.__name__ in mapping:
+                    allowed_methods = mapping[module_object.__name__]
+                else:
+                    continue
+                if sys.version_info[:2] >= (3, 0):
+                    methods = inspect.getmembers(
+                        module_object, predicate=inspect.isfunction)
+                else:
+                    methods = inspect.getmembers(
+                        module_object, predicate=inspect.ismethod)
+                for method_name, method in methods:
+                    if allowed_methods == "ALL":
+                        decorator_struct = decorators_struct["ALL"]
+                    elif method_name in allowed_methods:
+                        decorator_struct = decorators_struct["{0}.{1}".format(
+                            module_object.__name__, method_name)]
                     else:
-                        allowed_methods = mapping[module_object.__name__]
-                    if sys.version_info[:2] >= (3, 0):
-                        methods = inspect.getmembers(
-                            module_object, predicate=inspect.isfunction)
-                    else:
-                        methods = inspect.getmembers(
-                            module_object, predicate=inspect.ismethod)
-                    for method_name, method in methods:
-                        if (None in allowed_methods or
-                                method_name in allowed_methods):
-                            setattr(module_object, method_name, decorator(
-                                    method, True,
-                                    use_profiler=bredala.USE_PROFILER))
+                        continue
+                    Decorations._decorate(
+                        module_object, method_name, method, decorator_struct,
+                        is_method=True)
+
+    @classmethod
+    def _decorate(cls, module, module_attr, module_object, decorator_struct,
+                  is_method=False):
+        """ Method that decorates a specific function or class method.
+
+        Parameters
+        ----------
+        module: object (mandatory)
+            a python module object.
+        module_attr: str (mandatory)
+            the name of the mofule attribute to be decorated.
+        module_object: object
+            the function/method to be decorated.
+        decorator_struct: dict
+            a dictionary with the decorator types as keys and the decorator -
+            decorator parameters as values.
+        is_method: bool (optional, default False)
+            True if the module object is a method of a class, False otherwise.
+        """
+        # Get the declared type decorators
+        type_decorators = []
+        for key in ("inputs", "outputs"):
+            if key not in decorator_struct:
+                continue
+            decorator = decorator_struct[key]["decorator"]
+            registered_types = decorator_struct[key]["types"]
+            type_decorators.append((decorator, registered_types))
+
+        # Apply decorators
+        if "signature" in decorator_struct:
+            decorator = decorator_struct["signature"]["decorator"]
+            setattr(module, module_attr, decorator(
+                module_object,
+                use_profiler=bredala.USE_PROFILER,
+                is_method=is_method,
+                type_decorators=type_decorators))
+        else:
+            for decorator, registered_types in type_decorators:
+                setattr(module, module_attr,
+                        decorator(*registered_types)(module_object))
+                module_object = getattr(module, module_attr)
 
     @classmethod
     def split_class(cls, name):

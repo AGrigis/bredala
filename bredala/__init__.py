@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 ##########################################################################
 # Bredala - Copyright (C) AGrigis, 2015
 # Distributed under the terms of the CeCILL-B license, as published by
@@ -7,11 +6,17 @@
 # for details.
 ##########################################################################
 
+"""
+Easy to use pure-python caller signature and line-profiler.
+"""
+
 # Bredala globals
-__version__ = "1.0.2"
 USE_PROFILER = True
 _modules = {}
 _hackers = []
 
 # Bredala import
+from .info import __version__
 from .modulehacker import register
+from .modulehacker import itype
+from .modulehacker import otype

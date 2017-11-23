@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 ##########################################################################
 # Bredala - Copyright (C) AGrigis, 2015
 # Distributed under the terms of the CeCILL-B license, as published by
@@ -6,6 +5,12 @@
 # http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.html
 # for details.
 ##########################################################################
+
+
+"""
+Modules that defines the package custom decorators displayed to user.
+"""
+
 
 # System import
 from __future__ import print_function
@@ -16,7 +21,8 @@ import numpy
 import pprofile
 
 
-def bredala_signature(obj, is_method=False, use_profiler=True):
+def bredala_signature(obj, is_method=False, use_profiler=True,
+                      type_decorators=None):
     """ Create a decorator that display a function or a class method signature
     and execution time.
 
@@ -28,12 +34,16 @@ def bredala_signature(obj, is_method=False, use_profiler=True):
         True if the input object it a method of a class, False otherwise.
     use_profiler: bool (optional, default True)
         if True display the input object execution profile.
+    type_decorators: list of 2-uplet (optional, default None)
+        a list of decorator function, parameters ad tuple of types.
 
     Retruns
     -------
     wrapper: callable
         the decorated input object.
     """
+    type_decorators = type_decorators or []
+
     def wrapper(*args, **kwargs):
         """ Define the input object decorator.
         """
@@ -43,7 +53,7 @@ def bredala_signature(obj, is_method=False, use_profiler=True):
         optional = dict(zip(reversed(arg_spec.args or []), reversed(defaults)))
         for name, value in kwargs.items():
             if name in optional:
-                optional[name] = repr(value)
+                optional[name] = object_repr(value)
         mandatory = []
         self_parameter = None
         for index in range(len(arg_spec.args) - len(optional)):
@@ -56,17 +66,7 @@ def bredala_signature(obj, is_method=False, use_profiler=True):
                     self_parameter = value
                 if arg_spec.args[index] == "cls":
                     args = args[1:]
-                if isinstance(value, list):
-                    try:
-                        value_repr = array_repr(numpy.asarray(value))[6:]
-                        endindex = value_repr.find("dtype") - 2
-                        value_repr = value_repr[:endindex]
-                    except:
-                        value_repr = repr(value)
-                elif isinstance(value, numpy.ndarray):
-                    value_repr = array_repr(numpy.asarray(value))
-                else:
-                    value_repr = repr(value)
+                value_repr = object_repr(value)
                 mandatory.append((arg_spec.args[index], value_repr))
             except:
                 mandatory.append((arg_spec.args[index], None))
@@ -89,13 +89,18 @@ def bredala_signature(obj, is_method=False, use_profiler=True):
         print("{0}\n[{1}] Calling {2}...\n{3}".format(
             80 * "_", package_name, obj_name, signature))
 
+        # A type signature if requested
+        _obj = obj
+        for decorator, registered_types in type_decorators:
+            _obj = decorator(*registered_types)(_obj)
+
         # Call
         start_time = time.time()
         if use_profiler:
             profiler = pprofile.Profile()
             returncode = profiler.runcall(obj, *args, **kwargs)
         else:
-            returncode = obj(*args, **kwargs)
+            returncode = _obj(*args, **kwargs)
         duration = time.time() - start_time
 
         # Display execution profile
@@ -113,6 +118,28 @@ def bredala_signature(obj, is_method=False, use_profiler=True):
     return wrapper
 
 
+def object_repr(obj):
+    """ Representation of a Pyton object.
+
+    Parameters
+    ----------
+    obj: object
+        a Python object.
+
+    Returns
+    -------
+    obj_repr: str
+        the representation of the Python object.
+    """
+    if isinstance(obj, (list, tuple, set)):
+        obj_repr = iter_repr(obj)
+    elif isinstance(obj, numpy.ndarray):
+        obj_repr = array_repr(numpy.asarray(obj))
+    else:
+        obj_repr = repr(obj)
+    return obj_repr
+
+
 def array_repr(array):
     """ Representation of a numpy array.
 
@@ -127,6 +154,39 @@ def array_repr(array):
         the representation of the numpy array.
     """
     return " ".join([item.strip() for item in repr(array).split("\n")])
+
+
+def iter_repr(iter_obj):
+    """ Representation of an iterable object.
+
+    Parameters
+    ----------
+    iter_obj: list, set, tuple
+        an iterable object.
+
+    Returns
+    -------
+    repr: str
+        the representation of the iterable object.
+    """
+    # Get the separator based on the object type.
+    if isinstance(iter_obj, list):
+        separator = ("[", "]")
+    elif isinstance(iter_obj, tuple):
+        separator = ("(", ")")
+    elif isinstance(iter_obj, set):
+        separator = ("{", "}")
+    else:
+        return repr(iter_obj)
+
+    # Get the representation of each inner object.
+    if len(iter_obj) <= 10:
+        inner_objs = [object_repr(elem) for elem in iter_obj]
+    else:
+        inner_objs = [object_repr(elem) for elem in list(iter_obj)[:5]]
+        inner_objs.append("...")
+        inner_objs.extend([object_repr(elem) for elem in list(iter_obj)[-5:]])
+    return separator[0] + ", ".join(inner_objs) + separator[1]
 
 
 def annotate(profiler, out, module_name, obj_code):

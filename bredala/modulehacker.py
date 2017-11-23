@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 ##########################################################################
 # Bredala - Copyright (C) AGrigis, 2015
 # Distributed under the terms of the CeCILL-B license, as published by
@@ -9,6 +8,11 @@
 # Based on: https://www.python.org/dev/peps/pep-0302/
 ##########################################################################
 
+"""
+Module that implements the New Import Hooks' PEP0302.
+"""
+
+
 # System import
 import sys
 import os
@@ -18,25 +22,76 @@ import imp
 # Bredala import
 import bredala
 from .signaturedecorator import bredala_signature
-from.decorations import Decorations
+from .typedecorator import inputs, returns
+from .decorations import Decorations
 
 
-def register(module, decorator=bredala_signature, names=None):
+def register(module, decorator=bredala_signature, names=None,
+             decorator_type="signature", **kwargs):
     """ Function to register a decorator for a list of module names.
 
     Parameters
     ----------
-    decorator: callable (mandatory)
-        a decorator function.
     module: str (mandatory)
         a module name whose functions will be decorated.
+    decorator: callable (optional, default  @bredala_signature)
+        a decorator function.
     names: list of str (optional, default None)
         a list of function or methods we want to decorate, if None all the
         module functions or methods will be decorated.
+    decorator_type: str
+        the decorator type. Supported values are 'signature', 'inputs' and
+        'outputs'.
+    kwargs: dict (optional)
+        extra arguments used during the dynamic decorations: 'istype' and
+        'types'.
     """
+    if decorator_type not in ("signature", "inputs", "outputs"):
+        raise ValueError("'{0}' decorator type not recognized.".format(
+            decorator_type))
     if module not in bredala._modules:
-        bredala._modules[module] = []
-    bredala._modules[module].append({"decorator": decorator, "names": names})
+        bredala._modules[module] = {}
+    if names is None:
+        names = ["ALL"]
+    for name in names:
+        kwargs["decorator"] = decorator
+        bredala._modules[module].setdefault(name, {})[decorator_type] = kwargs
+
+
+def itype(module, name, input_types, decorator=inputs):
+    """ Function to register a decorator to type inputs.
+
+    Parameters
+    ----------
+    module: str (mandatory)
+        a module name whose functions will be decorated.
+    name: str ((mandatory)
+        a function or a method we want to decorate.
+    input_types: tuple of types (mandatory)
+        the decorate function input types.
+    decorator: callable (optional, default @inputs)
+        a decorator function.
+    """
+    register(module, decorator=decorator, names=[name],
+             decorator_type="inputs", types=input_types)
+
+
+def otype(module, name, output_types, decorator=returns):
+    """ Function to register a decorator to type outputs.
+
+    Parameters
+    ----------
+    module: str (mandatory)
+        a module name whose functions will be decorated.
+    name: str ((mandatory)
+        a function or a method we want to decorate.
+    output_types: tuple of types (mandatory)
+        the decorate function returned types.
+    decorator: callable (optional, default @returns)
+        a decorator function.
+    """
+    register(module, decorator=decorator, names=[name],
+             decorator_type="outputs", types=output_types)
 
 
 def modulehacker_register(obj):

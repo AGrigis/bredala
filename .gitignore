@@ -14,5 +14,5 @@
 ###########
 build/
 dist/
-bredala.egg-info/
+Bredala.egg-info/
 __pycache__/

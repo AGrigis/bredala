@@ -1,6 +1,5 @@
-#! /usr/bin/env python
 ##########################################################################
-# Bredala - Copyright (C) AGrigis, 2015
+# Bredala - Copyright (C) AGrigis, 2015 - 2017
 # Distributed under the terms of the CeCILL-B license, as published by
 # the CEA-CNRS-INRIA. Refer to the LICENSE file or to
 # http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.html
@@ -27,3 +26,9 @@ def factorial(a):
         return 1
     else:
         return a * factorial(a - 1)
+
+
+def mytype(param, optional=None):
+    """ Demonstration function.
+    """
+    return repr(type(param))

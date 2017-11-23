@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 ##########################################################################
-# Bredala - Copyright (C) AGrigis, 2015
+# Bredala - Copyright (C) AGrigis, 2015 - 2017
 # Distributed under the terms of the CeCILL-B license, as published by
 # the CEA-CNRS-INRIA. Refer to the LICENSE file or to
 # http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.html
@@ -8,37 +8,39 @@
 ##########################################################################
 
 # System import
+import os
 from setuptools import setup, find_packages
-from os.path import join, dirname
-import bredala
-import sys
 
 
-description = open(join(dirname(__file__), "README.rst")).read()
+# Get package information
+release_info = {}
+infopath = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "bredala", "info.py"))
+with open(infopath) as open_file:
+    exec(open_file.read(), release_info)
+description = open(
+    os.path.join(os.path.dirname(__file__), "README.rst")).read()
 pkgdata = {
     "bredala.test": ["*.py"],
 }
+scripts = []
 
+
+# Write setup
 setup(
-    name="bredala",
-    version=bredala.__version__,
-    author="Antoine Grigis",
-    author_email="antoine.grigis@cea.fr",
-    description=next(x for x in description.splitlines() if x.strip()),
-    long_description='.. contents::\n\n' + description,
-    url="http://github.com/AGrigis/bredala",
-    license='GPL 2+',
-    platforms=['any'],
-    classifiers=[
-        "Intended Audience :: Developers",
-        "License :: OSI Approved :: GNU General Public License v2 or "
-        "later (GPLv2+)",
-        "Operating System :: OS Independent",
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3",
-        "Topic :: Software Development",
-    ],
-    packages=find_packages(),
+    name=release_info["NAME"],
+    description=release_info["DESCRIPTION"],
+    long_description=description,
+    license=release_info["LICENSE"],
+    classifiers=release_info["CLASSIFIERS"],
+    author=release_info["AUTHOR"],
+    author_email=release_info["AUTHOR_EMAIL"],
+    version=release_info["VERSION"],
+    url=release_info["URL"],
+    packages=find_packages(exclude="doc"),
+    platforms=release_info["PLATFORMS"],
+    extras_require=release_info["EXTRA_REQUIRES"],
+    install_requires=release_info["REQUIRES"],
     package_data=pkgdata,
-    install_requires=["pprofile>=1.6"]
+    scripts=scripts
 )
