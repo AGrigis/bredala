@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+  
+    <title>BREDALA &mdash; Bredala</title>
+  <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="_static/css/bootstrap.min.css" media="screen" />
+
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Bredala" href="#" />
+    <link rel="next" title="Installing bredala" href="generated/installation.html" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="_static/js/bootstrap.min.js" type="text/javascript"></script>
+
+  <script src="_static/js/angular.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    var app = angular.module("navApp", []);
+    app.controller('navCtrl', ['$scope', '$window', function($scope, $window) {
+      $scope.isActive = function (viewLocation) {
+        var rel = $window.location.pathname.split("/")
+        rel = rel[rel.length - 1]
+        rel = rel.split(".")[0]
+        var active = (viewLocation === rel);
+        return active;};
+    }]);
+  </script>
+
+  </head>
+  <body role="document"><div class="banner">
+  <div class="container-fluid banner-container">
+    <div class="row banner-inner">
+      <div class="col-xs-4">
+        <img alt="Logo" src="_static/bredala.png">
+      </div>
+      <div class="col-xs-8">
+            <p>Easy to use pure-python caller signature and profiler.</p>
+      </div>
+    </div>  
+  </div>
+</div><nav class="navbar navbar-default navbar-static-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+        </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse" ng-controller="navCtrl" ng-app="navApp">
+      <ul class="nav navbar-nav">
+        <li ng-class="{ active: isActive('index') }"><a href="#">Home</a></li>
+        <li ng-class="{ active: isActive('installation') }"><a href="generated/installation.html">Installation</a></li>
+        <li ng-class="{ active: isActive('gallery') }"><a href="auto_gallery/gallery.html">Gallery</a></li>
+        <li ng-class="{ active: isActive('documentation') }"><a href="generated/documentation.html">API documentation</a></li>
+        <!--<li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+	        <li><a href="generated/bredala.html">Bredala</a></li>
+<li><a href="generated/bredala.demo.html">Bredala.demo</a></li>
+          </ul>
+        </li>-->
+        <li><a href="https://github.com/AGrigis/pysphinxdoc">PYSPHINXDOC</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="content-wrapper">
+    <div class="sphinxsidebar">
+      <div class="sphinxsidebarwrapper">
+
+        <!-- info setup -->
+          <p class="doc-version">
+           This documentation is for bredala <strong>version 1.0.3</strong>
+          </p>
+        <p class="citing">
+          If you use the software, please do not esitate to 
+          <a &mdash; <a href="https://github.com/AGrigis/bredala">
+          Report a Bug</a>.
+        </p>
+
+      <!-- toc tree -->
+      <ul>
+<li><a class="reference internal" href="#">Bredala</a></li>
+<li><a class="reference internal" href="#search">Search</a></li>
+</ul>
+
+
+      </div>
+    </div>
+  
+
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+          <div class="col-xs-4">
+            <div id="examples_carousel" class="carousel" data-ride="carousel">
+              <ol class="carousel-indicators">
+                <li data-target='#examples_carousel' data-slide-to='0' class='active'></li>
+<li data-target='#examples_carousel' data-slide-to='1' </li>
+<li data-target='#examples_carousel' data-slide-to='2' </li>
+<li data-target='#examples_carousel' data-slide-to='3' </li>
+<li data-target='#examples_carousel' data-slide-to='4' </li>
+              </ol>
+              <!-- Carousel items -->
+              <div class="carousel-inner" role="listbox">
+                <div class="active item"><a href="#"><img src="_static/carousel/bredala5.png"></div></a>
+<div class="item"><a href="#"><img src="_static/carousel/bredala3.png"></a></div>
+<div class="item"><a href="#"><img src="_static/carousel/bredala4.png"></a></div>
+<div class="item"><a href="#"><img src="_static/carousel/bredala1.png"></a></div>
+<div class="item"><a href="#"><img src="_static/carousel/bredala2.png"></a></div>
+              </div>
+              <!-- Carousel nav -->
+              <a class="left carousel-control" href="#examples_carousel" role="button" data-slide="prev">
+                <span class="icon-prev" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="right carousel-control" href="#examples_carousel" role="button" data-slide="next">
+                <span class="icon-next" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+              </a>
+           </div>
+          </div>
+          <div class="col-xs-8">
+                <div class="summary-carousel container">
+    Bredala is a Python module for <strong>pure-python caller signature and
+    profiler.</strong></div>
+          </div>   
+      </div>
+    </div>
+      
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="bredala">
+<h1>Bredala<a class="headerlink" href="#bredala" title="Permalink to this headline">¶</a></h1>
+<p>With Python&#8217;s standard profiling tools, it is not possible to tell
+dynamically which function is a hot-spot. On top of that the resulting
+execution output is not filtered and the information of interest may be
+difficult to find. Those drawbacks made me start <strong>bredala</strong> which provides:</p>
+<ul class="simple">
+<li>a dynamic API to define which functions/methods to follow: based on the
+<strong>New Import Hooks&#8217; PEP0302</strong>. The declaration has to be done before any
+processing import.</li>
+<li>a signature mechanism that display the prototype of the called
+function/method and the corresponding execution time.</li>
+<li>a filtered line-profile to access quickly to the execution time of interest.</li>
+</ul>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="search">
+<h1>Search<a class="headerlink" href="#search" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference internal" href="search.html"><span>Search Page</span></a></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+
+    <div class="clearer">
+    </div>
+  </div>
+  
+</div>
+
+<div class="footer">
+    &copy; 2017, Antoine Grigis &lt;antoine.grigis@cea.fr&gt;.
+</div>
+  </body>
+</html>

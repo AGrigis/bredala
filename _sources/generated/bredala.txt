@@ -1,0 +1,52 @@
+.. AUTO-GENERATED FILE -- DO NOT EDIT!
+
+:orphan:
+
+API documentation of *bredala*
+===============================
+
+
+Easy to use pure-python caller signature and line-profiler.
+
+
+.. raw:: html
+
+    <br/>    <!-- Block section -->
+    <table border='1' class='docutils' style='width:100%'>
+    <colgroup><col width='25%'/><col width='75%'/></colgroup>
+    <tbody valign='top'>
+    <tr class='row-odd'>
+    <td><a class='reference internal' href='bredala.exceptions.html'><em>bredala.exceptions</em></a></td>
+    <td>
+        <p>Module that defines the package custom exceptions.</p>
+    </td>
+    </tr>
+    <tr class='row-even'>
+    <td><a class='reference internal' href='bredala.signaturedecorator.html'><em>bredala.signaturedecorator</em></a></td>
+    <td>
+        <p>Modules that defines the package custom decorators displayed to user.</p>
+    </td>
+    </tr>
+    <tr class='row-odd'>
+    <td><a class='reference internal' href='bredala.modulehacker.html'><em>bredala.modulehacker</em></a></td>
+    <td>
+        <p>Module that implements the New Import Hooks' PEP0302.</p>
+    </td>
+    </tr>
+    <tr class='row-even'>
+    <td><a class='reference internal' href='bredala.typedecorator.html'><em>bredala.typedecorator</em></a></td>
+    <td>
+        <p>Modules that defines the package custom decorators that checks inputs/outputs
+    types.</p>
+    </td>
+    </tr>
+    <tr class='row-odd'>
+    <td><a class='reference internal' href='bredala.decorations.html'><em>bredala.decorations</em></a></td>
+    <td>
+        <p>Module that sets the package decoration functions dynamically.</p>
+    </td>
+    </tr>
+    </tbody>
+
+
+    </table>

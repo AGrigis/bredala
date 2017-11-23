@@ -1,0 +1,401 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+  
+    <title>BREDALA &mdash; Bredala</title>
+  <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
+
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Bredala" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+  
+   
+       <script type="text/javascript" src="../../_static/sidebar.js"></script>
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../../_static/js/bootstrap.min.js" type="text/javascript"></script>
+
+  <script src="../../_static/js/angular.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    var app = angular.module("navApp", []);
+    app.controller('navCtrl', ['$scope', '$window', function($scope, $window) {
+      $scope.isActive = function (viewLocation) {
+        var rel = $window.location.pathname.split("/")
+        rel = rel[rel.length - 1]
+        rel = rel.split(".")[0]
+        var active = (viewLocation === rel);
+        return active;};
+    }]);
+  </script>
+
+  </head>
+  <body role="document"><div class="banner">
+  <div class="container-fluid banner-container">
+    <div class="row banner-inner">
+      <div class="col-xs-4">
+        <img alt="Logo" src="../../_static/bredala.png">
+      </div>
+      <div class="col-xs-8">
+            <p>Easy to use pure-python caller signature and profiler.</p>
+      </div>
+    </div>  
+  </div>
+</div><nav class="navbar navbar-default navbar-static-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+        </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse" ng-controller="navCtrl" ng-app="navApp">
+      <ul class="nav navbar-nav">
+        <li ng-class="{ active: isActive('index') }"><a href="../../index.html">Home</a></li>
+        <li ng-class="{ active: isActive('installation') }"><a href="../../generated/installation.html">Installation</a></li>
+        <li ng-class="{ active: isActive('gallery') }"><a href="../../auto_gallery/gallery.html">Gallery</a></li>
+        <li ng-class="{ active: isActive('documentation') }"><a href="../../generated/documentation.html">API documentation</a></li>
+        <!--<li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+	        <li><a href="../../generated/bredala.html">Bredala</a></li>
+<li><a href="../../generated/bredala.demo.html">Bredala.demo</a></li>
+          </ul>
+        </li>-->
+        <li><a href="https://github.com/AGrigis/pysphinxdoc">PYSPHINXDOC</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="content-wrapper">
+    <div class="sphinxsidebar">
+      <div class="sphinxsidebarwrapper">
+
+        <!-- info setup -->
+          <p class="doc-version">
+           This documentation is for bredala <strong>version 1.0.3</strong>
+          </p>
+        <p class="citing">
+          If you use the software, please do not esitate to 
+          <a &mdash; <a href="https://github.com/AGrigis/bredala">
+          Report a Bug</a>.
+        </p>
+
+      <!-- toc tree -->
+      
+
+      </div>
+    </div>
+  
+
+  <div class="content">
+      
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for bredala.signaturedecorator</h1><div class="highlight"><pre>
+<span></span><span class="c1">##########################################################################</span>
+<span class="c1"># Bredala - Copyright (C) AGrigis, 2015</span>
+<span class="c1"># Distributed under the terms of the CeCILL-B license, as published by</span>
+<span class="c1"># the CEA-CNRS-INRIA. Refer to the LICENSE file or to</span>
+<span class="c1"># http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.html</span>
+<span class="c1"># for details.</span>
+<span class="c1">##########################################################################</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Modules that defines the package custom decorators displayed to user.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="c1"># System import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">pprofile</span>
+
+
+<div class="viewcode-block" id="bredala_signature"><a class="viewcode-back" href="../../generated/bredala.signaturedecorator.html#bredala.signaturedecorator.bredala_signature">[docs]</a><span class="k">def</span> <span class="nf">bredala_signature</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">is_method</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">use_profiler</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                      <span class="n">type_decorators</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Create a decorator that display a function or a class method signature</span>
+<span class="sd">    and execution time.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    obj: callable (mandatory)</span>
+<span class="sd">        a function or a class method object.</span>
+<span class="sd">    is_method: bool (optional, default False)</span>
+<span class="sd">        True if the input object it a method of a class, False otherwise.</span>
+<span class="sd">    use_profiler: bool (optional, default True)</span>
+<span class="sd">        if True display the input object execution profile.</span>
+<span class="sd">    type_decorators: list of 2-uplet (optional, default None)</span>
+<span class="sd">        a list of decorator function, parameters ad tuple of types.</span>
+
+<span class="sd">    Retruns</span>
+<span class="sd">    -------</span>
+<span class="sd">    wrapper: callable</span>
+<span class="sd">        the decorated input object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">type_decorators</span> <span class="o">=</span> <span class="n">type_decorators</span> <span class="ow">or</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Define the input object decorator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get the function parameters</span>
+        <span class="n">arg_spec</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getargspec</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="n">defaults</span> <span class="o">=</span> <span class="p">[</span><span class="nb">repr</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">arg_spec</span><span class="o">.</span><span class="n">defaults</span> <span class="ow">or</span> <span class="p">[]]</span>
+        <span class="n">optional</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">arg_spec</span><span class="o">.</span><span class="n">args</span> <span class="ow">or</span> <span class="p">[]),</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">defaults</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">optional</span><span class="p">:</span>
+                <span class="n">optional</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">object_repr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">mandatory</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">self_parameter</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arg_spec</span><span class="o">.</span><span class="n">args</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">optional</span><span class="p">)):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">arg_spec</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span>
+                <span class="k">if</span> <span class="n">arg_spec</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;self&quot;</span><span class="p">:</span>
+                    <span class="n">self_parameter</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">if</span> <span class="n">arg_spec</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;cls&quot;</span><span class="p">:</span>
+                    <span class="n">args</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+                <span class="n">value_repr</span> <span class="o">=</span> <span class="n">object_repr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="n">mandatory</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">arg_spec</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">value_repr</span><span class="p">))</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">mandatory</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">arg_spec</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="bp">None</span><span class="p">))</span>
+                <span class="k">raise</span>
+
+        <span class="c1"># Create the function signature</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;{0}={1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">mandatory</span><span class="p">]</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+            <span class="s2">&quot;{0}={1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">optional</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+        <span class="n">signature</span> <span class="o">=</span> <span class="s2">&quot;{0}({1})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">params</span><span class="p">))</span>
+
+        <span class="c1"># Display a start call message</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__module__</span>
+        <span class="n">package_name</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">is_method</span><span class="p">:</span>
+            <span class="n">obj_name</span> <span class="o">=</span> <span class="p">(</span><span class="n">module</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">self_parameter</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span>
+                        <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">obj_name</span> <span class="o">=</span> <span class="n">module</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;{0}</span><span class="se">\n</span><span class="s2">[{1}] Calling {2}...</span><span class="se">\n</span><span class="s2">{3}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="mi">80</span> <span class="o">*</span> <span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="n">package_name</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">,</span> <span class="n">signature</span><span class="p">))</span>
+
+        <span class="c1"># A type signature if requested</span>
+        <span class="n">_obj</span> <span class="o">=</span> <span class="n">obj</span>
+        <span class="k">for</span> <span class="n">decorator</span><span class="p">,</span> <span class="n">registered_types</span> <span class="ow">in</span> <span class="n">type_decorators</span><span class="p">:</span>
+            <span class="n">_obj</span> <span class="o">=</span> <span class="n">decorator</span><span class="p">(</span><span class="o">*</span><span class="n">registered_types</span><span class="p">)(</span><span class="n">_obj</span><span class="p">)</span>
+
+        <span class="c1"># Call</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">use_profiler</span><span class="p">:</span>
+            <span class="n">profiler</span> <span class="o">=</span> <span class="n">pprofile</span><span class="o">.</span><span class="n">Profile</span><span class="p">()</span>
+            <span class="n">returncode</span> <span class="o">=</span> <span class="n">profiler</span><span class="o">.</span><span class="n">runcall</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">returncode</span> <span class="o">=</span> <span class="n">_obj</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+
+        <span class="c1"># Display execution profile</span>
+        <span class="k">if</span> <span class="n">use_profiler</span><span class="p">:</span>
+            <span class="n">obj_code</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getsourcelines</span><span class="p">(</span><span class="n">obj</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">annotate</span><span class="p">(</span><span class="n">profiler</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmodule</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="vm">__file__</span><span class="p">,</span>
+                     <span class="n">obj_code</span><span class="p">)</span>
+
+        <span class="c1"># Display an end message</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;{0:.1f}s, {1:.1f}min&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span> <span class="n">duration</span> <span class="o">/</span> <span class="mf">60.</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">80</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">msg</span><span class="p">)))</span> <span class="o">*</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">returncode</span>
+
+    <span class="k">return</span> <span class="n">wrapper</span></div>
+
+
+<div class="viewcode-block" id="object_repr"><a class="viewcode-back" href="../../generated/bredala.signaturedecorator.html#bredala.signaturedecorator.object_repr">[docs]</a><span class="k">def</span> <span class="nf">object_repr</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Representation of a Pyton object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    obj: object</span>
+<span class="sd">        a Python object.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    obj_repr: str</span>
+<span class="sd">        the representation of the Python object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">set</span><span class="p">)):</span>
+        <span class="n">obj_repr</span> <span class="o">=</span> <span class="n">iter_repr</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">obj_repr</span> <span class="o">=</span> <span class="n">array_repr</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">obj_repr</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">obj_repr</span></div>
+
+
+<div class="viewcode-block" id="array_repr"><a class="viewcode-back" href="../../generated/bredala.signaturedecorator.html#bredala.signaturedecorator.array_repr">[docs]</a><span class="k">def</span> <span class="nf">array_repr</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Representation of a numpy array.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    array: array (mandatory)</span>
+<span class="sd">        a numpy array.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    repr: str</span>
+<span class="sd">        the representation of the numpy array.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">item</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">repr</span><span class="p">(</span><span class="n">array</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)])</span></div>
+
+
+<div class="viewcode-block" id="iter_repr"><a class="viewcode-back" href="../../generated/bredala.signaturedecorator.html#bredala.signaturedecorator.iter_repr">[docs]</a><span class="k">def</span> <span class="nf">iter_repr</span><span class="p">(</span><span class="n">iter_obj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Representation of an iterable object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    iter_obj: list, set, tuple</span>
+<span class="sd">        an iterable object.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    repr: str</span>
+<span class="sd">        the representation of the iterable object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get the separator based on the object type.</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iter_obj</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">separator</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;[&quot;</span><span class="p">,</span> <span class="s2">&quot;]&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iter_obj</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">separator</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">,</span> <span class="s2">&quot;)&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iter_obj</span><span class="p">,</span> <span class="nb">set</span><span class="p">):</span>
+        <span class="n">separator</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;{&quot;</span><span class="p">,</span> <span class="s2">&quot;}&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="n">iter_obj</span><span class="p">)</span>
+
+    <span class="c1"># Get the representation of each inner object.</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">iter_obj</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">:</span>
+        <span class="n">inner_objs</span> <span class="o">=</span> <span class="p">[</span><span class="n">object_repr</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">iter_obj</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">inner_objs</span> <span class="o">=</span> <span class="p">[</span><span class="n">object_repr</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">iter_obj</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]]</span>
+        <span class="n">inner_objs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+        <span class="n">inner_objs</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">object_repr</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">iter_obj</span><span class="p">)[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]])</span>
+    <span class="k">return</span> <span class="n">separator</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">inner_objs</span><span class="p">)</span> <span class="o">+</span> <span class="n">separator</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="annotate"><a class="viewcode-back" href="../../generated/bredala.signaturedecorator.html#bredala.signaturedecorator.annotate">[docs]</a><span class="k">def</span> <span class="nf">annotate</span><span class="p">(</span><span class="n">profiler</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">obj_code</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Dump annotated input object source code with current profiling</span>
+<span class="sd">    statistics to &#39;out&#39; stream. Time unit is second.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    profiler: pprofile.Profile (mandatory)</span>
+<span class="sd">        a profiler.</span>
+<span class="sd">    out: stream (mandatory)</span>
+<span class="sd">        destination of annotated input object source code.</span>
+<span class="sd">    module_name:</span>
+<span class="sd">        the name of the module of interest (used to filter the execution list).</span>
+<span class="sd">    obj_code: list of str (mandatory)</span>
+<span class="sd">        the source code of the object of interest (used to filter the</span>
+<span class="sd">        execution list).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get the full execution list that will be filtered</span>
+    <span class="n">file_dict</span> <span class="o">=</span> <span class="n">profiler</span><span class="o">.</span><span class="n">file_dict</span>
+    <span class="n">total_time</span> <span class="o">=</span> <span class="n">profiler</span><span class="o">.</span><span class="n">total_time</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">total_time</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Define a function to compute pecentage</span>
+    <span class="k">def</span> <span class="nf">percent</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
+
+    <span class="c1"># Get all the file profiled</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">profiler</span><span class="o">.</span><span class="n">_getFileNameList</span><span class="p">(</span><span class="bp">None</span><span class="p">):</span>
+
+        <span class="c1"># Select the module of interest and deal with &#39;.py&#39; &#39;.pyc&#39; extensions</span>
+        <span class="k">if</span> <span class="n">module_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+
+            <span class="c1"># Get line by line execution information</span>
+            <span class="n">file_timing</span> <span class="o">=</span> <span class="n">file_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">call_list_by_line</span> <span class="o">=</span> <span class="n">file_timing</span><span class="o">.</span><span class="n">getCallListByLine</span><span class="p">()</span>
+
+            <span class="c1"># Display the result table header</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">pprofile</span><span class="o">.</span><span class="n">_ANNOTATE_HEADER</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">pprofile</span><span class="o">.</span><span class="n">_ANNOTATE_HORIZONTAL_LINE</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
+
+            <span class="c1"># Populate the table with the execution result</span>
+            <span class="n">in_obj</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">for</span> <span class="n">line_item</span> <span class="ow">in</span> <span class="n">profiler</span><span class="o">.</span><span class="n">_iterFile</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">call_list_by_line</span><span class="p">):</span>
+
+                <span class="c1"># Select the portion related to the called object</span>
+                <span class="n">lineno</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">hits</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">line</span> <span class="o">=</span> <span class="n">line_item</span>
+                <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="n">obj_code</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="n">in_obj</span> <span class="o">=</span> <span class="bp">True</span>
+
+                <span class="c1"># Display the execution status</span>
+                <span class="k">if</span> <span class="n">in_obj</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">hits</span><span class="p">:</span>
+                        <span class="n">time_per_hit</span> <span class="o">=</span> <span class="n">duration</span> <span class="o">/</span> <span class="n">hits</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">time_per_hit</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="k">print</span><span class="p">(</span><span class="n">pprofile</span><span class="o">.</span><span class="n">_ANNOTATE_FORMAT</span> <span class="o">%</span> <span class="p">{</span>
+                        <span class="s2">&quot;lineno&quot;</span><span class="p">:</span> <span class="n">lineno</span><span class="p">,</span>
+                        <span class="s2">&quot;hits&quot;</span><span class="p">:</span> <span class="n">hits</span><span class="p">,</span>
+                        <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">duration</span><span class="p">,</span>
+                        <span class="s2">&quot;time_per_hit&quot;</span><span class="p">:</span> <span class="n">time_per_hit</span><span class="p">,</span>
+                        <span class="s2">&quot;percent&quot;</span><span class="p">:</span> <span class="n">percent</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span> <span class="n">total_time</span><span class="p">),</span>
+                        <span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="n">line</span><span class="p">,</span>
+                    <span class="p">},</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="n">out</span><span class="p">),</span>
+
+                <span class="c1"># Select the portion related to the called object</span>
+                <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="n">obj_code</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="n">in_obj</span> <span class="o">=</span> <span class="bp">False</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+
+    <div class="clearer">
+    </div>
+  </div>
+  
+</div>
+
+<div class="footer">
+    &copy; 2017, Antoine Grigis &lt;antoine.grigis@cea.fr&gt;.
+</div>
+  </body>
+</html>

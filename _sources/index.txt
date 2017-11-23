@@ -1,0 +1,40 @@
+..  bredala documentation master file
+
+
+
+=======
+Bredala
+=======
+
+With Python's standard profiling tools, it is not possible to tell
+dynamically which function is a hot-spot. On top of that the resulting
+execution output is not filtered and the information of interest may be
+difficult to find. Those drawbacks made me start **bredala** which provides:
+
+* a dynamic API to define which functions/methods to follow: based on the
+  **New Import Hooks' PEP0302**. The declaration has to be done before any
+  processing import.
+* a signature mechanism that display the prototype of the called
+  function/method and the corresponding execution time.
+* a filtered line-profile to access quickly to the execution time of interest.
+
+
+
+.. toctree::
+    :maxdepth: 1
+    :hidden:
+
+    generated/installation
+    generated/documentation
+
+
+=======
+Search
+=======
+
+:ref:`search`
+
+
+
+
+

@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+  
+    <title>BREDALA &mdash; Bredala</title>
+  <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../_static/css/bootstrap.min.css" media="screen" />
+
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Bredala" href="../index.html" />
+  
+   
+       <script type="text/javascript" src="../_static/sidebar.js"></script>
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../_static/js/bootstrap.min.js" type="text/javascript"></script>
+
+  <script src="../_static/js/angular.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    var app = angular.module("navApp", []);
+    app.controller('navCtrl', ['$scope', '$window', function($scope, $window) {
+      $scope.isActive = function (viewLocation) {
+        var rel = $window.location.pathname.split("/")
+        rel = rel[rel.length - 1]
+        rel = rel.split(".")[0]
+        var active = (viewLocation === rel);
+        return active;};
+    }]);
+  </script>
+
+  </head>
+  <body role="document"><div class="banner">
+  <div class="container-fluid banner-container">
+    <div class="row banner-inner">
+      <div class="col-xs-4">
+        <img alt="Logo" src="../_static/bredala.png">
+      </div>
+      <div class="col-xs-8">
+            <p>Easy to use pure-python caller signature and profiler.</p>
+      </div>
+    </div>  
+  </div>
+</div><nav class="navbar navbar-default navbar-static-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+        </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse" ng-controller="navCtrl" ng-app="navApp">
+      <ul class="nav navbar-nav">
+        <li ng-class="{ active: isActive('index') }"><a href="../index.html">Home</a></li>
+        <li ng-class="{ active: isActive('installation') }"><a href="installation.html">Installation</a></li>
+        <li ng-class="{ active: isActive('gallery') }"><a href="../auto_gallery/gallery.html">Gallery</a></li>
+        <li ng-class="{ active: isActive('documentation') }"><a href="documentation.html">API documentation</a></li>
+        <!--<li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+	        <li><a href="bredala.html">Bredala</a></li>
+<li><a href="bredala.demo.html">Bredala.demo</a></li>
+          </ul>
+        </li>-->
+        <li><a href="https://github.com/AGrigis/pysphinxdoc">PYSPHINXDOC</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="content-wrapper">
+    <div class="sphinxsidebar">
+      <div class="sphinxsidebarwrapper">
+
+        <!-- info setup -->
+          <p class="doc-version">
+           This documentation is for bredala <strong>version 1.0.3</strong>
+          </p>
+        <p class="citing">
+          If you use the software, please do not esitate to 
+          <a &mdash; <a href="https://github.com/AGrigis/bredala">
+          Report a Bug</a>.
+        </p>
+
+      <!-- toc tree -->
+      <ul class="simple">
+</ul>
+
+
+      </div>
+    </div>
+  
+
+  <div class="content">
+      
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-bredala.typedecorator"></span><p>Modules that defines the package custom decorators that checks inputs/outputs
+types.</p>
+<dl class="function">
+<dt id="bredala.typedecorator.inputs">
+<code class="descclassname">bredala.typedecorator.</code><code class="descname">inputs</code><span class="sig-paren">(</span><em>*accepted_arg_types</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bredala/typedecorator.html#inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bredala.typedecorator.inputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>A decorator to validate the parameter types of a given function.</p>
+<p>It is passed a tuple, eg. (&lt;type &#8216;tuple&#8217;&gt;, &lt;type &#8216;int&#8217;&gt;), and
+checks only types.</p>
+<p>Special types are &#8216;self&#8217; and &#8216;cls&#8217; and are usefull for class methods.</p>
+<dl class="docutils">
+<dt>Note: It doesn&#8217;t do a deep check, for example checking through a</dt>
+<dd>tuple of types.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="bredala.typedecorator.ordinal">
+<code class="descclassname">bredala.typedecorator.</code><code class="descname">ordinal</code><span class="sig-paren">(</span><em>num</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bredala/typedecorator.html#ordinal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bredala.typedecorator.ordinal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the ordinal number of a given integer, as a string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>num: int</strong></p>
+<blockquote>
+<div><p>an integer.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">ordinal: str</p>
+<blockquote class="last">
+<div><p>the ordinal representation of the input integer, eg. 1 -&gt; 1st,
+2 -&gt; 2nd, 3 -&gt; 3rd, etc.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bredala.typedecorator.returns">
+<code class="descclassname">bredala.typedecorator.</code><code class="descname">returns</code><span class="sig-paren">(</span><em>*accepted_return_type_tuple</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bredala/typedecorator.html#returns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bredala.typedecorator.returns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator to set the return types.</p>
+<p>It is passed a tuple, eg. (&lt;type &#8216;tuple&#8217;&gt;, &lt;type &#8216;int&#8217;&gt;), and
+checks only types.</p>
+<dl class="docutils">
+<dt>Note: It doesn&#8217;t do a deep check, for example checking through a</dt>
+<dd>tuple of types.</dd>
+</dl>
+</dd></dl>
+
+
+
+          </div>
+        </div>
+      </div>
+
+    <div class="clearer">
+    </div>
+  </div>
+  
+</div>
+
+<div class="footer">
+    &copy; 2017, Antoine Grigis &lt;antoine.grigis@cea.fr&gt;.
+</div>
+  </body>
+</html>
