@@ -133,6 +133,8 @@ def object_repr(obj):
     """
     if isinstance(obj, (list, tuple, set)):
         obj_repr = iter_repr(obj)
+    elif isinstance(obj, dict):
+        obj_repr = dict_repr(obj)
     elif isinstance(obj, numpy.ndarray):
         obj_repr = array_repr(numpy.asarray(obj))
     else:
@@ -187,6 +189,32 @@ def iter_repr(iter_obj):
         inner_objs.append("...")
         inner_objs.extend([object_repr(elem) for elem in list(iter_obj)[-5:]])
     return separator[0] + ", ".join(inner_objs) + separator[1]
+
+
+def dict_repr(dict_obj):
+    """ Representation of a dictionary object.
+
+    Parameters
+    ----------
+    dict_obj: dict
+        a dictionary object.
+
+    Returns
+    -------
+    dict_repr: str
+        the representation of the dictionary object.
+    """
+    # Get the separator based on the object type.
+    if isinstance(dict_obj, dict):
+        dict_repr = "{"
+    else:
+        return repr(iter_obj)
+
+    # Get the representation of each inner object.
+    for key, value in dict_obj.items():
+        dict_repr += "'{0}': {1},".format(key, object_repr(value))
+    dict_repr = dict_repr[:-1] + "}"
+    return dict_repr
 
 
 def annotate(profiler, out, module_name, obj_code):
