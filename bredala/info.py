@@ -70,6 +70,7 @@ ISRELEASE = True
 VERSION = __version__
 PROVIDES = ["bredala"]
 REQUIRES = [
+    "numpy>=1.11.0",
     "pprofile>=1.6"
 ]
 EXTRA_REQUIRES = {}
